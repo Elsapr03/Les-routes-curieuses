@@ -1,0 +1,29 @@
+[
+  {
+    "id":1,
+    "title":"Tour des falaises secrètes",
+    "location":"Bretagne, France",
+    "summary":"Un itinéraire côtier avec des points de vue isolés, petits ports et bivouac sauvage.",
+    "duration":"3 jours",
+    "difficulty":"Facile",
+    "image":"https://picsum.photos/seed/route1/800/600"
+  },
+  {
+    "id":2,
+    "title":"Les vignes oubliées",
+    "location":"Vallée de la Loire",
+    "summary":"Routes lentes entre domaines, dégustations locales et paysages vallonnés.",
+    "duration":"2 jours",
+    "difficulty":"Moyen",
+    "image":"https://picsum.photos/seed/route2/800/600"
+  },
+  {
+    "id":3,
+    "title":"Au fil des canaux",
+    "location":"Nord, France",
+    "summary":"Balade tranquille le long des canaux, villages pittoresques et haltes culturelles.",
+    "duration":"1 jour",
+    "difficulty":"Facile",
+    "image":"https://picsum.photos/seed/route3/800/600"
+  }
+]
