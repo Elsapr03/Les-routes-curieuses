@@ -5,7 +5,7 @@ const { current = '' } = Astro.props;
   <div class="site-nav">
     <a href="/" class="site-logo" aria-label="Les Routes Curieuses, accueil">Les Routes Curieuses<span>Roadbooks & itinéraires</span></a>
     <nav class="site-links" aria-label="Navigation principale">
-      <a href="/#itineraires" aria-current={current === 'itineraires' ? 'page' : undefined}>Itinéraires</a>
+      <a href="/itineraires/" aria-current={current === 'itineraires' ? 'page' : undefined}>Itinéraires</a>
       <a href="/sur-mesure/" aria-current={current === 'sur-mesure' ? 'page' : undefined}>Sur mesure</a>
       <a href="/#bas-carbone">Bas carbone</a>
       <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
