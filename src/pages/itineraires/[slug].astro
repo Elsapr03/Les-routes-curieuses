@@ -1,0 +1,34 @@
+---
+import { getCollection, render } from 'astro:content';
+export async function getStaticPaths() {
+  const items = await getCollection('destinations', ({ data }) => data.published);
+  return items.map(item => ({ params: { slug: item.id }, props: { item } }));
+}
+const { item } = Astro.props;
+const { Content } = await render(item);
+const d = item.data;
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="description" content={d.description}/><title>{d.title} — Les Routes Curieuses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+:root{--cream:#faf8f2;--paper:#fffdf8;--ink:#263d52;--muted:#63727a;--terra:#b96f4d;--line:#dddcd4}
+*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font-family:'DM Sans',sans-serif;line-height:1.7}a{color:inherit}img{max-width:100%;display:block}h1,h2,h3{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:1.15}.wrap{width:min(1120px,calc(100% - 40px));margin:auto}.topbar{background:var(--ink);color:#fff;text-align:center;font-size:.72rem;letter-spacing:.13em;padding:9px}.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:90px}.logo{font-family:'DM Serif Display',Georgia,serif;font-size:1.5rem;text-decoration:none;line-height:1}.logo small{display:block;font-family:'DM Sans',sans-serif;text-transform:uppercase;letter-spacing:.25em;font-size:.56rem;margin-top:9px}.navlinks{display:flex;gap:24px;font-size:.85rem;font-weight:700}.navlinks a{text-decoration:none}.navlinks a:hover,.back:hover{color:var(--terra)}.back{display:inline-block;margin-bottom:22px;font-size:.86rem;text-decoration:none;font-weight:700}.hero{padding:80px 0 60px;background:var(--paper);border-top:1px solid var(--line)}.eyebrow{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--terra);font-weight:700}.hero h1{font-size:clamp(3.4rem,8vw,7rem);letter-spacing:-.04em;margin:14px 0 20px}.lead{font-size:clamp(1.05rem,2vw,1.4rem);max-width:720px;color:var(--muted)}.photo{height:clamp(250px,48vw,530px);object-fit:cover;width:100%;margin-top:40px}.photo-placeholder{margin-top:40px;min-height:220px;background:#dce5d6;display:grid;place-items:center;text-align:center;padding:30px;color:var(--ink)}.facts{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;padding:28px 0;border-bottom:1px solid var(--line)}.fact{padding:12px 18px;border-left:2px solid var(--terra)}.fact small{display:block;color:var(--muted);font-size:.75rem}.fact strong{display:block;font-size:1.1rem;margin-top:5px}.body-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:65px;padding:70px 0 100px}.prose{font-size:1.05rem;max-width:730px}.prose h2{font-size:2.3rem;margin:40px 0 18px}.prose h3{font-size:1.7rem}.prose p,.prose li{color:#455b67}.prose li{margin-bottom:10px}.prose img{border-radius:2px}.aside{align-self:start;position:sticky;top:20px;border:1px solid var(--line);background:var(--paper);padding:25px}.aside h2{font-size:1.9rem;margin:0 0 12px}.aside p{font-size:.9rem;color:var(--muted)}.notice{border-top:1px solid var(--line);padding-top:20px;margin-top:24px;font-size:.83rem;color:var(--muted)}.button{display:block;text-align:center;background:var(--ink);color:#fff;text-decoration:none;font-size:.88rem;font-weight:700;padding:13px}.muted{color:var(--muted)}footer{background:var(--ink);color:white;padding:38px 0;font-size:.8rem}footer a{color:white}
+@media(max-width:750px){.nav{flex-wrap:wrap;padding:20px 0}.navlinks{gap:15px;flex-wrap:wrap}.hero{padding:50px 0 35px}.facts{grid-template-columns:1fr 1fr}.body-grid{grid-template-columns:1fr;gap:25px;padding:45px 0 65px}.aside{position:static}.photo{margin-top:25px}}
+</style>
+</head>
+<body>
+<div class="topbar">VOYAGER LOIN · DÉPENSER MOINS · RESTER LIBRE</div>
+<header class="wrap nav"><a class="logo" href="/">Les Routes Curieuses<small>Roadbooks & itinéraires</small></a><nav class="navlinks" aria-label="Navigation"><a href="/itineraires/">Itinéraires</a><a href="/blog/">Blog</a><a href="/#sur-mesure">Sur mesure</a></nav></header>
+<main>
+<section class="hero"><div class="wrap"><a class="back" href="/itineraires/">← Tous les itinéraires</a><p class="eyebrow">Carnet de voyage · Itinéraire</p><h1>{d.title}</h1><p class="lead">{d.description}</p>
+{d.cover ? <img class="photo" src={d.cover} alt={`Paysage illustrant l'itinéraire : ${d.title}`}/> : <div class="photo-placeholder">Les photographies de ce voyage seront bientôt ajoutées.</div>}
+</div></section>
+<div class="wrap"><section class="facts" aria-label="Informations pratiques"><div class="fact"><small>Durée</small><strong>{d.duration ? `${d.duration} jours` : 'À préciser'}</strong></div><div class="fact"><small>Transport</small><strong>{d.transport || 'À préciser'}</strong></div><div class="fact"><small>Budget voyage indicatif</small><strong>{d.travelBudget !== undefined ? `${d.travelBudget} €` : 'À préciser'}</strong></div><div class="fact"><small>Prix du roadbook PDF</small><strong>{d.roadbookPrice !== undefined ? `${d.roadbookPrice} €` : 'À préciser'}</strong></div></section>
+<div class="body-grid"><article class="prose"><p class="eyebrow">Le voyage en détail</p><Content/></article><aside class="aside"><p class="eyebrow">Le carnet de route</p><h2>Prête à partir ?</h2><p>Un roadbook pour préparer votre voyage à votre rythme, sans réservation imposée.</p><p><strong>Roadbook PDF :</strong> {d.roadbookPrice !== undefined ? `${d.roadbookPrice} €` : 'Tarif à venir'}</p><p class="muted">La commande et le téléchargement ne sont pas encore ouverts.</p><a class="button" href="/itineraires/">Découvrir les itinéraires</a><div class="notice">Vous réservez vous-même transports, hébergements et activités. Les budgets sont indicatifs et peuvent varier.</div></aside></div></div>
+</main><footer><div class="wrap">© {new Date().getFullYear()} Les Routes Curieuses · <a href="/">Retour à l'accueil</a></div></footer>
+</body></html>

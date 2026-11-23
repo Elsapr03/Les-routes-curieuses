@@ -1,0 +1,218 @@
+---
+const statuts = ['Nouvelle', 'En discussion', 'Devis envoyé', 'Terminée', 'Refusée'];
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Aperçu de gestion — Les Routes Curieuses</title>
+<script is:inline>
+  if (new URLSearchParams(window.location.search).get('embed') === '1') {
+    document.documentElement.classList.add('embedded-admin');
+  }
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+:root{--cream:#faf8f2;--paper:#fffdf8;--ink:#263d52;--muted:#63727a;--terra:#b96f4d;--line:#dddcd4;--sage:#dce5d6}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.6 'DM Sans',Arial,sans-serif}a{color:inherit}button,select{font:inherit}h1,h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400}h1{font-size:clamp(2.4rem,5vw,4rem);line-height:1.1;margin:10px 0}h2{font-size:1.55rem}.wrap{width:min(1060px,calc(100% - 36px));margin:auto}.top{padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:20px}.logo{font:1.45rem 'DM Serif Display',Georgia,serif;text-decoration:none}.intro{padding:45px 0 25px}.eyebrow{color:var(--terra);text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:.15em}.muted{color:var(--muted)}.warning{border-left:4px solid var(--terra);padding:15px 20px;background:#f5eae3;margin:25px 0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}.stat{background:var(--paper);border:1px solid var(--line);padding:20px}.stat strong{font-size:2rem;display:block;font-family:'DM Serif Display',Georgia,serif;font-weight:400}.stat span{font-size:.83rem;color:var(--muted)}.panel{background:var(--paper);border:1px solid var(--line);padding:25px;margin-bottom:80px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:18px}.toolbar h2{margin:0}.toolbar label{font-size:.85rem;font-weight:700}select{padding:9px 12px;border:1px solid #bcc7c7;background:white;color:var(--ink);border-radius:3px}.list{display:grid;gap:12px}.request{border:1px solid var(--line);padding:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:15px}.request h3{margin:0 0 5px;font-size:1.07rem}.request p{margin:3px 0;font-size:.86rem;color:var(--muted)}.pill{display:inline-block;padding:5px 10px;background:var(--sage);font-size:.75rem;font-weight:700;white-space:nowrap;align-self:start}.empty{padding:30px;text-align:center;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0;font-size:.8rem;color:var(--muted)}@media(max-width:640px){.summary{grid-template-columns:1fr}.request{grid-template-columns:1fr}.panel{padding:16px}.top{align-items:flex-start}}
+.request[hidden],.details[hidden]{display:none}.details{grid-column:1/-1;border-top:1px solid var(--line);padding-top:12px}.details p{margin:6px 0}.details button,.toggle-details{border:1px solid var(--line);background:var(--sage);padding:8px 12px;cursor:pointer}.details label{display:block;font-weight:700;margin:10px 0}.details textarea{width:100%;min-height:95px;padding:12px;border:1px solid #bcc7c7;background:#fffdf8;font:inherit;resize:vertical}.details .note-label{display:block;margin:16px 0 6px;font-weight:700}.details .note-actions{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.details .note-actions button{border:1px solid var(--line);background:var(--sage);padding:9px 13px;cursor:pointer}.details .history{margin:10px 0;padding-left:22px}.details .history li{font-size:.85rem;color:var(--muted);margin:6px 0}.details .note-feedback{font-size:.82rem;color:var(--muted)}.details textarea:focus-visible,.details button:focus-visible{outline:3px solid var(--terra);outline-offset:2px}.details .client-card{background:#f1f3eb;border:1px solid var(--line);padding:16px;margin:14px 0}.details .client-card h4,.details .steps h4{margin:0 0 10px;font-size:1.04rem}.details .client-card p{margin:6px 0}.details .steps{border-top:1px solid var(--line);padding-top:14px;margin-top:18px}.details .step{display:flex;align-items:center;gap:10px;margin:9px 0;font-weight:500}.details .step input{width:18px;height:18px;accent-color:#58775f}.details .progress{font-size:.86rem;color:var(--muted);margin:10px 0}.details .step input:focus-visible{outline:3px solid var(--terra);outline-offset:2px}.attention{border:1px solid var(--line);background:var(--paper);padding:20px;margin:22px 0}.attention h2{margin:0 0 10px}.attention ul{padding-left:22px;margin:8px 0}.attention li{margin:7px 0}.attention a{color:var(--ink)}.deadline-field{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:12px 0}.deadline-field input{font:inherit;padding:9px 12px;border:1px solid #bcc7c7;max-width:210px}.deadline-hint{font-size:.83rem;color:var(--muted)}.due-tag{display:inline-block;margin:8px 0;padding:4px 9px;background:#f5eae3;font-size:.8rem;font-weight:700}.stat strong{font-variant-numeric:tabular-nums}.embedded-admin body{background:transparent}.embedded-admin .top,.embedded-admin .intro,.embedded-admin footer{display:none!important}.embedded-admin .wrap{width:100%;max-width:none}.embedded-admin .panel{margin-bottom:0}.embedded-admin main.wrap{padding:0}.embedded-admin .attention{margin-top:0}
+</style>
+</head>
+<body>
+<header class="wrap top"><a class="logo" href="/">Les Routes Curieuses</a><a href="/sur-mesure/">Voir le questionnaire</a></header>
+<main class="wrap">
+<section class="intro"><p class="eyebrow">Espace de gestion · Maquette</p><h1>Demandes de roadbooks</h1><p class="muted">Aperçu du futur tableau de bord de suivi des demandes.</p>
+<div class="warning"><strong>Démonstration uniquement.</strong> Cette page est accessible publiquement par son adresse. Elle ne contient aucune demande réelle, aucun e-mail ni aucune donnée personnelle. Les exemples ci-dessous sont fictifs. L'accès privé et l'enregistrement des demandes ne sont pas encore activés.</div></section>
+<div class="summary"><div class="stat"><strong id="total-demandes">3</strong><span>Demandes fictives</span></div><div class="stat"><strong id="nouvelles-demandes">1</strong><span>Nouvelles</span></div><div class="stat"><strong id="en-cours-demandes">2</strong><span>En cours de suivi</span></div></div>
+<section class="attention" aria-labelledby="attention-title"><h2 id="attention-title">À suivre en priorité</h2><p class="muted">Demandes nouvelles et échéances de préparation proches ou dépassées (démonstration).</p><ul id="priorites" aria-live="polite"></ul></section>
+<section class="panel" aria-labelledby="liste-titre"><div class="toolbar"><h2 id="liste-titre">Liste des demandes</h2><label for="filtre">Filtrer par statut <select id="filtre"><option value="Tous">Tous les statuts</option>{statuts.map(statut=><option value={statut}>{statut}</option>)}</select></label></div>
+<div class="list" id="demandes">
+<article class="request" data-demo-id="1" data-statut="Nouvelle"><div><h3>Voyage en Slovénie</h3><p>Exemple fictif · 2 voyageurs · 7 jours · budget sur place : 450 € / personne</p><p>Transport souhaité : train</p></div><span class="pill">Nouvelle</span><button class="toggle-details" type="button" aria-expanded="false">Voir la demande</button><div class="details" hidden><div class="client-card"><h4>Fiche voyageur · Exemple fictif</h4><p><strong>Contact :</strong> camille@exemple.invalid</p><p><strong>Voyageurs :</strong> 2 personnes</p><p><strong>Durée :</strong> 7 jours</p><p><strong>Budget sur place :</strong> 450 € / personne</p><p><strong>Transports :</strong> Train</p></div><p><strong>Prénom fictif :</strong> Camille</p><p><strong>Départ :</strong> 2027-05-10</p><p><strong>Inspirations :</strong> Randonnées et découverte de la nature.</p><label>Statut <select class="edit-statut"><option value="Nouvelle">Nouvelle</option><option value="En discussion">En discussion</option><option value="Devis envoyé">Devis envoyé</option><option value="Terminée">Terminée</option><option value="Refusée">Refusée</option></select></label><div class="steps"><h4>Préparation du roadbook · Démonstration</h4><p class="progress" aria-live="polite"></p><label class="step"><input type="checkbox" data-step="0" />Prendre connaissance de la demande</label><label class="step"><input type="checkbox" data-step="1" />Échanger avec le voyageur</label><label class="step"><input type="checkbox" data-step="2" />Préparer une proposition et un devis</label><label class="step"><input type="checkbox" data-step="3" />Obtenir la validation du voyageur</label><label class="step"><input type="checkbox" data-step="4" />Créer le roadbook</label><label class="step"><input type="checkbox" data-step="5" />Envoyer le roadbook</label></div><div class="deadline-field"><label>Échéance de préparation <input type="date" class="due-date" aria-label="Échéance de préparation fictive"/></label><span class="deadline-hint">Date interne pour préparer le roadbook, différente du départ.</span></div><span class="due-tag" hidden></span><label class="note-label" >Notes de suivi (démonstration)</label><textarea class="private-note" aria-label="Notes internes fictives" placeholder="Ex. : Préparer une proposition, vérifier les transports, relancer le client…"></textarea><div class="note-actions"><button type="button" class="save-note">Enregistrer la note</button><span class="note-feedback" role="status"></span></div><p><strong>Historique de suivi</strong></p><ol class="history"></ol><p>Simulation avec des données fictives. Les notes restent uniquement dans ce navigateur, et ne sont pas envoyées au serveur. N'y saisissez aucune information réelle.</p></div></article>
+<article class="request" data-demo-id="2" data-statut="En discussion"><div><h3>Escapade nature, destination à définir</h3><p>Exemple fictif · 1 voyageur · 5 jours · budget sur place : 300 €</p><p>Transport souhaité : sans préférence</p></div><span class="pill">En discussion</span><button class="toggle-details" type="button" aria-expanded="false">Voir la demande</button><div class="details" hidden><div class="client-card"><h4>Fiche voyageur · Exemple fictif</h4><p><strong>Contact :</strong> alex@exemple.invalid</p><p><strong>Voyageurs :</strong> 1 personne</p><p><strong>Durée :</strong> 5 jours</p><p><strong>Budget sur place :</strong> 300 € / personne</p><p><strong>Transports :</strong> Sans préférence</p></div><p><strong>Prénom fictif :</strong> Alex</p><p><strong>Départ :</strong> À définir</p><p><strong>Inspirations :</strong> Un séjour reposant, petit budget.</p><label>Statut <select class="edit-statut"><option value="Nouvelle">Nouvelle</option><option value="En discussion">En discussion</option><option value="Devis envoyé">Devis envoyé</option><option value="Terminée">Terminée</option><option value="Refusée">Refusée</option></select></label><div class="steps"><h4>Préparation du roadbook · Démonstration</h4><p class="progress" aria-live="polite"></p><label class="step"><input type="checkbox" data-step="0" />Prendre connaissance de la demande</label><label class="step"><input type="checkbox" data-step="1" />Échanger avec le voyageur</label><label class="step"><input type="checkbox" data-step="2" />Préparer une proposition et un devis</label><label class="step"><input type="checkbox" data-step="3" />Obtenir la validation du voyageur</label><label class="step"><input type="checkbox" data-step="4" />Créer le roadbook</label><label class="step"><input type="checkbox" data-step="5" />Envoyer le roadbook</label></div><div class="deadline-field"><label>Échéance de préparation <input type="date" class="due-date" aria-label="Échéance de préparation fictive"/></label><span class="deadline-hint">Date interne pour préparer le roadbook, différente du départ.</span></div><span class="due-tag" hidden></span><label class="note-label" >Notes de suivi (démonstration)</label><textarea class="private-note" aria-label="Notes internes fictives" placeholder="Ex. : Préparer une proposition, vérifier les transports, relancer le client…"></textarea><div class="note-actions"><button type="button" class="save-note">Enregistrer la note</button><span class="note-feedback" role="status"></span></div><p><strong>Historique de suivi</strong></p><ol class="history"></ol><p>Simulation avec des données fictives. Les notes restent uniquement dans ce navigateur, et ne sont pas envoyées au serveur. N'y saisissez aucune information réelle.</p></div></article>
+<article class="request" data-demo-id="3" data-statut="Devis envoyé"><div><h3>Découvrir le Portugal</h3><p>Exemple fictif · 3 voyageurs · 10 jours · budget sur place : 600 € / personne</p><p>Transport souhaité : bus, train</p></div><span class="pill">Devis envoyé</span><button class="toggle-details" type="button" aria-expanded="false">Voir la demande</button><div class="details" hidden><div class="client-card"><h4>Fiche voyageur · Exemple fictif</h4><p><strong>Contact :</strong> morgan@exemple.invalid</p><p><strong>Voyageurs :</strong> 3 personnes</p><p><strong>Durée :</strong> 10 jours</p><p><strong>Budget sur place :</strong> 600 € / personne</p><p><strong>Transports :</strong> Bus et train</p></div><p><strong>Prénom fictif :</strong> Morgan</p><p><strong>Départ :</strong> 2027-06-15</p><p><strong>Inspirations :</strong> Découvrir les villes en transports collectifs.</p><label>Statut <select class="edit-statut"><option value="Nouvelle">Nouvelle</option><option value="En discussion">En discussion</option><option value="Devis envoyé">Devis envoyé</option><option value="Terminée">Terminée</option><option value="Refusée">Refusée</option></select></label><div class="steps"><h4>Préparation du roadbook · Démonstration</h4><p class="progress" aria-live="polite"></p><label class="step"><input type="checkbox" data-step="0" />Prendre connaissance de la demande</label><label class="step"><input type="checkbox" data-step="1" />Échanger avec le voyageur</label><label class="step"><input type="checkbox" data-step="2" />Préparer une proposition et un devis</label><label class="step"><input type="checkbox" data-step="3" />Obtenir la validation du voyageur</label><label class="step"><input type="checkbox" data-step="4" />Créer le roadbook</label><label class="step"><input type="checkbox" data-step="5" />Envoyer le roadbook</label></div><div class="deadline-field"><label>Échéance de préparation <input type="date" class="due-date" aria-label="Échéance de préparation fictive"/></label><span class="deadline-hint">Date interne pour préparer le roadbook, différente du départ.</span></div><span class="due-tag" hidden></span><label class="note-label" >Notes de suivi (démonstration)</label><textarea class="private-note" aria-label="Notes internes fictives" placeholder="Ex. : Préparer une proposition, vérifier les transports, relancer le client…"></textarea><div class="note-actions"><button type="button" class="save-note">Enregistrer la note</button><span class="note-feedback" role="status"></span></div><p><strong>Historique de suivi</strong></p><ol class="history"></ol><p>Simulation avec des données fictives. Les notes restent uniquement dans ce navigateur, et ne sont pas envoyées au serveur. N'y saisissez aucune information réelle.</p></div></article>
+</div><p id="aucun" class="empty" hidden>Aucune demande fictive avec ce statut.</p>
+<p class="muted" style="font-size:.8rem;margin-top:22px">Vous pouvez ouvrir les demandes fictives et changer leur statut pour tester l'interface. Les statuts et notes fictifs sont conservés dans ce navigateur uniquement (stockage local). Ne saisissez aucune donnée réelle.</p></section>
+</main><footer><div class="wrap">© {new Date().getFullYear()} Les Routes Curieuses · Maquette sans données réelles</div></footer>
+<script>
+const filtre = document.getElementById('filtre');
+const items = [...document.querySelectorAll('.request')];
+const aucun = document.getElementById('aucun');
+const demoPrefix = 'routes-curieuses-demo-gestion-v1-';
+const stateById = new Map();
+function dayOnly(date) { const d = new Date(date + 'T12:00:00'); return Number.isNaN(d.getTime()) ? null : d; }
+function updateDashboard() {
+  document.getElementById('total-demandes').textContent = String(items.length);
+  document.getElementById('nouvelles-demandes').textContent = String(items.filter(x => x.dataset.statut === 'Nouvelle').length);
+  document.getElementById('en-cours-demandes').textContent = String(items.filter(x => ['En discussion','Devis envoyé'].includes(x.dataset.statut)).length);
+  const ul = document.getElementById('priorites');
+  ul.replaceChildren();
+  const today = new Date();today.setHours(12,0,0,0);
+  let count = 0;
+  for (const item of items) {
+    const status = item.dataset.statut;
+    if (status === 'Terminée' || status === 'Refusée') continue;
+    const data = stateById.get(item.dataset.demoId);
+    const due = data?.dueDate ? dayOnly(data.dueDate) : null;
+    const days = due ? Math.round((due - today) / 86400000) : null;
+    const urgent = days !== null && days <= 14;
+    const isNew = status === 'Nouvelle';
+    const tag = item.querySelector('.due-tag');
+    if (tag) {
+      tag.hidden = !due;
+      if (due) tag.textContent = days < 0 ? 'Échéance dépassée' : days === 0 ? 'Échéance aujourd’hui' : 'Échéance : ' + due.toLocaleDateString('fr-FR');
+    }
+    if (!urgent && !isNew) continue;
+    count++;
+    const li = document.createElement('li');
+    const link = document.createElement('a');
+    link.href = '#demande-' + item.dataset.demoId;
+    link.textContent = item.querySelector('h3').textContent;
+    link.addEventListener('click', () => {
+      filtre.value = 'Tous';filtrer();
+      const details = item.querySelector('.details');
+      details.hidden = false;
+      const toggle = item.querySelector('.toggle-details');
+      toggle.setAttribute('aria-expanded','true');toggle.textContent = 'Masquer la demande';
+    });
+    li.append(link,document.createTextNode(' — ' + (urgent ? (days < 0 ? 'échéance dépassée' : days === 0 ? 'échéance aujourd’hui' : 'échéance dans ' + days + ' jour(s)') : 'nouvelle demande')));
+    ul.append(li);
+  }
+  if (!count) {const li=document.createElement('li');li.textContent='Aucune priorité signalée pour le moment.';ul.append(li);}
+}
+
+function filtrer() {
+  let count = 0;
+  for (const item of items) {
+    const visible = filtre.value === 'Tous' || item.dataset.statut === filtre.value;
+    item.hidden = !visible;
+    if (visible) count++;
+  }
+  aucun.hidden = count > 0;
+}
+
+filtre.addEventListener('change', filtrer);
+
+for (const item of items) {
+  const toggle = item.querySelector('.toggle-details');
+  const details = item.querySelector('.details');
+  const select = item.querySelector('.edit-statut');
+  const note = item.querySelector('.private-note');
+  const save = item.querySelector('.save-note');
+  const feedback = item.querySelector('.note-feedback');
+  const history = item.querySelector('.history');
+  item.id = 'demande-' + item.dataset.demoId;
+  const dueInput = item.querySelector('.due-date');
+  const key = demoPrefix + item.dataset.demoId;
+  let data = { statut: item.dataset.statut, note: '', events: [], steps: [], dueDate: '' };
+
+  try {
+    const stored = JSON.parse(localStorage.getItem(key) || 'null');
+    if (stored && typeof stored === 'object') {
+      data = { ...data, ...stored };
+      if (!Array.isArray(data.events)) data.events = [];
+      if (!Array.isArray(data.steps)) data.steps = [];
+    }
+  } catch {}
+
+  if (!['Nouvelle', 'En discussion', 'Devis envoyé', 'Terminée', 'Refusée'].includes(data.statut)) {
+    data.statut = item.dataset.statut;
+  }
+  stateById.set(item.dataset.demoId,data);
+  dueInput.value = typeof data.dueDate === 'string' ? data.dueDate : '';
+  dueInput.addEventListener('change', () => {
+    data.dueDate = dueInput.value;
+    record('Échéance de préparation ' + (data.dueDate ? 'fixée au ' + data.dueDate : 'effacée'));
+    persist();renderHistory();updateDashboard();
+  });
+  item.dataset.statut = data.statut;
+  item.querySelector('.pill').textContent = data.statut;
+  select.value = data.statut;
+  note.value = typeof data.note === 'string' ? data.note : '';
+
+  function record(message) {
+    data.events.unshift({ date: new Date().toLocaleString('fr-FR'), message });
+    data.events = data.events.slice(0, 20);
+  }
+  function persist() {
+    try {
+      localStorage.setItem(key, JSON.stringify(data));
+      return true;
+    } catch {
+      feedback.textContent = 'Enregistrement local indisponible.';
+      return false;
+    }
+  }
+  function renderHistory() {
+    history.replaceChildren();
+    if (!data.events.length) {
+      const li = document.createElement('li');
+      li.textContent = 'Aucune action pour le moment.';
+      history.append(li);
+    } else {
+      for (const event of data.events) {
+        const li = document.createElement('li');
+        li.textContent = event.date + ' — ' + event.message;
+        history.append(li);
+      }
+    }
+  }
+
+  toggle.addEventListener('click', () => {
+    const open = details.hidden;
+    details.hidden = !open;
+    toggle.setAttribute('aria-expanded', String(open));
+    toggle.textContent = open ? 'Masquer la demande' : 'Voir la demande';
+  });
+  select.addEventListener('change', () => {
+    data.statut = select.value;
+    record('Statut modifié : ' + select.value);
+    persist();
+    renderHistory();
+    item.dataset.statut = select.value;
+    item.querySelector('.pill').textContent = select.value;
+    filtrer();updateDashboard();
+  });
+  save.addEventListener('click', () => {
+    data.note = note.value.slice(0, 2000);
+    note.value = data.note;
+    record('Note de suivi enregistrée');
+    if (persist()) feedback.textContent = 'Note enregistrée dans ce navigateur.';
+    renderHistory();
+  });
+  const checks = [...item.querySelectorAll('.step input')];
+  const progress = item.querySelector('.progress');
+  function renderProgress() {
+    progress.textContent = checks.filter(check => check.checked).length + ' étape(s) sur ' + checks.length + ' réalisées.';
+  }
+  for (const check of checks) {
+    check.checked = data.steps.includes(Number(check.dataset.step));
+    check.addEventListener('change', () => {
+      data.steps = checks.filter(c => c.checked).map(c => Number(c.dataset.step));
+      record('Étape de préparation ' + (check.checked ? 'validée' : 'décochée'));
+      persist();
+      renderHistory();
+      renderProgress();
+    });
+  }
+  renderProgress();
+  renderHistory();
+}
+filtrer();
+updateDashboard();
+
+const embeddedAdmin = new URLSearchParams(window.location.search).get('embed') === '1';
+if (embeddedAdmin && window.parent !== window) {
+  const reportHeight = () => {
+    const height = Math.max(document.body.scrollHeight, document.documentElement.scrollHeight);
+    window.parent.postMessage({ type: 'routes-curieuses-sur-mesure-resize', height }, window.location.origin);
+  };
+  if ('ResizeObserver' in window) {
+    const observer = new ResizeObserver(reportHeight);
+    observer.observe(document.body);
+  }
+  window.addEventListener('load', reportHeight);
+  requestAnimationFrame(reportHeight);
+}
+</script>
+</body></html>

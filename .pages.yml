@@ -1,0 +1,82 @@
+# Configuration Pages CMS — gestion GitHub du contenu
+media:
+  input: public/images
+  output: /images
+content:
+  - name: blog
+    label: Articles du blog
+    type: collection
+    path: src/content/blog
+    view:
+      fields: [title, category, published, date]
+      primary: title
+      sort: [date, title]
+      default:
+        sort: date
+        order: desc
+    fields:
+      - name: title
+        label: Titre
+        type: string
+        required: true
+      - name: description
+        label: Résumé
+        type: text
+        required: true
+      - name: date
+        label: Date
+        type: date
+        required: true
+      - name: category
+        label: Catégorie
+        type: select
+        options:
+          values: [Récits de voyage, Petit budget, Bas carbone, Voyage en solo, Bonnes adresses]
+      - name: cover
+        label: Photographie de couverture
+        type: image
+      - name: published
+        label: Publier cet article
+        type: boolean
+        default: false
+      - name: body
+        label: Contenu
+        type: rich-text
+  - name: destinations
+    label: Destinations et roadbooks
+    type: collection
+    path: src/content/destinations
+    view:
+      fields: [title, duration, published, roadbookPrice]
+      primary: title
+    fields:
+      - name: title
+        label: Destination
+        type: string
+        required: true
+      - name: description
+        label: Présentation
+        type: text
+        required: true
+      - name: duration
+        label: Durée (jours)
+        type: number
+      - name: transport
+        label: Transports
+        type: string
+      - name: cover
+        label: Photographie
+        type: image
+      - name: travelBudget
+        label: Budget voyage indicatif en euros
+        type: number
+      - name: roadbookPrice
+        label: Prix du PDF en euros
+        type: number
+      - name: published
+        label: Afficher sur le site
+        type: boolean
+        default: false
+      - name: body
+        label: Programme et informations
+        type: rich-text

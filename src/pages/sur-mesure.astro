@@ -1,0 +1,40 @@
+---
+import SiteHeader from '../components/SiteHeader.astro';
+const transports = ['Sans préférence','Train','Bus','Bateau','Vélo','Avion possible'];
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="description" content="Racontez votre projet de voyage pour imaginer un roadbook sur mesure avec Les Routes Curieuses."/>
+<title>Roadbook sur mesure — Les Routes Curieuses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Serif+Display&display=swap" rel="stylesheet"/>
+<style>
+:root{--cream:#faf8f2;--paper:#fffdf8;--ink:#263d52;--muted:#63727a;--terra:#b96f4d;--line:#dddcd4}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.65 'DM Sans',Arial,sans-serif}a{color:inherit}h1,h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400;line-height:1.12}h1{font-size:clamp(2.7rem,6vw,5rem);margin:12px 0 20px}h2{font-size:1.9rem;margin:0 0 12px}.wrap{width:min(980px,calc(100% - 36px));margin:auto}.nav{display:flex;justify-content:space-between;align-items:center;gap:20px;padding:25px 0}.logo{font:1.5rem 'DM Serif Display',Georgia,serif;text-decoration:none}.back{font-size:.85rem;font-weight:700;text-decoration:none}.hero{padding:65px 0 48px}.eyebrow{font-size:.75rem;letter-spacing:.17em;text-transform:uppercase;color:var(--terra);font-weight:700}.lead{max-width:670px;color:var(--muted);font-size:1.1rem}.layout{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:36px;align-items:start;padding-bottom:90px}.panel{background:var(--paper);border:1px solid var(--line);padding:35px}.field{margin:23px 0}.field label,.group-label{display:block;font-size:.9rem;font-weight:700;margin-bottom:9px}.field small{display:block;color:var(--muted);font-size:.78rem;margin-top:5px}input,select,textarea{width:100%;border:1px solid #c9d0cf;background:white;border-radius:3px;padding:13px 14px;color:var(--ink);font:inherit}textarea{min-height:130px;resize:vertical}input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid var(--terra);outline-offset:2px}.duo{display:grid;grid-template-columns:1fr 1fr;gap:18px}.checklist{display:flex;flex-wrap:wrap;gap:10px}.checklist label{display:flex;align-items:center;gap:7px;border:1px solid var(--line);padding:9px 12px;font-size:.85rem}.checklist input{width:auto}.note{font-size:.85rem;color:var(--muted)}.disabled{background:#9da9b1;color:white;border:0;padding:14px 25px;font-weight:700;font:inherit;cursor:not-allowed;border-radius:3px}.aside{background:#e5ebe1;padding:25px}.aside p{font-size:.9rem}.aside h2{font-size:1.55rem}.status{border-left:3px solid var(--terra);padding:12px 15px;background:#f5eae3;font-size:.88rem;margin-bottom:24px}footer{border-top:1px solid var(--line);padding:25px 0;color:var(--muted);font-size:.8rem}@media(max-width:740px){.layout{grid-template-columns:1fr}.panel{padding:22px}.duo{grid-template-columns:1fr}.hero{padding:35px 0 25px}}
+</style>
+</head>
+<body>
+<SiteHeader current="sur-mesure" />
+<main class="wrap">
+<section class="hero"><p class="eyebrow">Votre voyage, à votre image</p><h1>Imaginons votre roadbook sur mesure.</h1><p class="lead">Une destination en tête, ou simplement une envie de partir ? Racontez votre projet. Il n'est pas nécessaire d'avoir déjà tout décidé.</p></section>
+<div class="layout">
+<section class="panel" aria-labelledby="form-title">
+<div class="status" role="status"><strong>Formulaire en préparation.</strong> Vous pouvez découvrir les questions, mais l'envoi n'est pas encore activé. Aucune information saisie ici n'est transmise ni enregistrée.</div>
+<h2 id="form-title">Parlez-moi de votre voyage</h2>
+<form onsubmit="return false">
+<div class="field"><label for="destination">Destination ou envie</label><input id="destination" name="destination" type="text" placeholder="Un pays, une région, une envie d'ailleurs…"/><small>Vous pouvez aussi écrire « Je ne sais pas encore ».</small></div>
+<div class="duo"><div class="field"><label for="depart">Date de départ</label><input id="depart" name="depart" type="date"/></div><div class="field"><label for="duree">Durée du voyage</label><input id="duree" name="duree" type="text" placeholder="Ex. : 7 jours"/></div></div>
+<div class="duo"><div class="field"><label for="budget">Budget sur place, par personne</label><input id="budget" name="budget" type="text" placeholder="Ex. : 400 €"/><small>Budget du voyage, pas le prix du roadbook.</small></div><div class="field"><label for="voyageurs">Nombre de voyageurs</label><input id="voyageurs" name="voyageurs" type="number" min="1" step="1" placeholder="Ex. : 2"/></div></div>
+<div class="field"><span class="group-label" id="transport-title">Votre façon de voyager</span><div class="checklist" role="group" aria-labelledby="transport-title">{transports.map((transport,i)=><label><input type="checkbox" name="transport" value={transport} />{transport}</label>)}</div></div>
+<div class="field"><label for="inspirations">Vos inspirations</label><textarea id="inspirations" name="inspirations" placeholder="Des lieux repérés, des photos, des liens, une ambiance, ce que vous aimez…"></textarea></div>
+<div class="duo"><div class="field"><label for="prenom">Votre prénom</label><input id="prenom" name="prenom" type="text" autocomplete="given-name"/></div><div class="field"><label for="email">Votre e-mail</label><input id="email" name="email" type="email" autocomplete="email"/></div></div>
+<p class="note">L'envoi du formulaire ne constituera pas une commande. Les modalités et le tarif seront précisés avant tout engagement.</p>
+<p class="note">Avant l'ouverture, une information sur le traitement des données personnelles et les modalités de conservation sera ajoutée ici.</p>
+<button type="button" class="disabled" disabled aria-disabled="true">Envoyer ma demande — bientôt disponible</button>
+</form>
+</section>
+<aside class="aside"><h2>Pas encore d'idée précise ?</h2><p>C'est aussi un point de départ ! Une envie de nature, de rencontres, de villes à explorer ou de découvertes inattendues suffit pour commencer à imaginer un voyage.</p><p><strong>Comment ça fonctionnera ?</strong> Votre demande sera étudiée, puis vous pourrez échanger sur votre projet et recevoir une proposition avant toute commande.</p></aside>
+</div>
+</main><footer><div class="wrap">© {new Date().getFullYear()} Les Routes Curieuses · Site en cours de préparation</div></footer>
+</body></html>

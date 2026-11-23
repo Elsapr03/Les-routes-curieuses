@@ -1,0 +1,37 @@
+---
+import SiteHeader from '../../components/SiteHeader.astro';
+import { getCollection } from 'astro:content';
+const articles = (await getCollection('blog', ({ data }) => data.published)).sort((a,b)=>b.data.date.getTime()-a.data.date.getTime());
+const featured = articles[0];
+const rest = articles.slice(1);
+const dateFr = (date) => date.toLocaleDateString('fr-FR',{day:'numeric',month:'long',year:'numeric'});
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<meta name="description" content="Récits, inspirations et conseils de voyage dans le carnet des Routes Curieuses."/>
+<title>Le carnet de voyage — Les Routes Curieuses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Raleway:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--cream:#FAF6EF;--paper:#fffdf8;--ink:#082E3D;--muted:#5C6E72;--sand:#E7DECF;--ochre:#B9793C}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.75 Raleway,Arial,sans-serif}a{color:inherit}a:focus-visible{outline:3px solid var(--ochre);outline-offset:4px}.wrap{width:min(1120px,calc(100% - 48px));margin-inline:auto}
+header{border-bottom:1px solid var(--sand)}.nav{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:88px}.logo{font:600 1.55rem 'Playfair Display',Georgia,serif;text-decoration:none}.nav-links{display:flex;flex-wrap:wrap;gap:25px;font-size:.87rem;font-weight:600}.nav-links a{text-decoration:none}.nav-links a:hover,.read:hover{color:var(--ochre)}
+.intro{padding:74px 0 55px;max-width:800px}.eyebrow{font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ochre);font-weight:700;margin:0 0 16px}h1,h2,h3{font-family:'Playfair Display',Georgia,serif;line-height:1.16;font-weight:600}h1{font-size:clamp(2.9rem,6.5vw,5.2rem);margin:0 0 22px}h2{font-size:clamp(2rem,4vw,3.2rem);margin:12px 0 20px}h3{font-size:1.65rem;margin:10px 0 14px}.lead{font-size:1.09rem;line-height:1.9;color:var(--muted);max-width:620px;margin:0}
+.feature{display:grid;grid-template-columns:1fr 1fr;min-height:355px;background:var(--sand);border-radius:8px;overflow:hidden}.feature-visual{min-height:340px;background:#c5c9b8 url('https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=85') center/cover no-repeat}.feature-copy{padding:clamp(30px,5vw,66px);display:flex;flex-direction:column;justify-content:center}.meta{font-size:.79rem;letter-spacing:.06em;color:var(--muted);font-weight:600}.feature-copy p:not(.eyebrow):not(.meta){margin:0 0 22px;color:#415760}.read{font-size:.86rem;font-weight:700;text-decoration:none;border-bottom:1px solid currentColor;align-self:flex-start;padding-bottom:4px}.feature h2 a,.post h3 a{text-decoration:none}
+.more{padding:84px 0}.section-heading{display:flex;justify-content:space-between;align-items:end;gap:24px;border-bottom:1px solid var(--sand);padding-bottom:18px;margin-bottom:30px}.section-heading h2{font-size:2.3rem;margin:0}.post-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:26px}.post{background:var(--paper);border:1px solid var(--sand);border-radius:7px;overflow:hidden}.post-visual{height:155px;background:linear-gradient(135deg,#E7DECF,#b5bcb0)}.post-body{padding:25px}.post h3{font-size:1.48rem}.post p:not(.meta){font-size:.91rem;color:var(--muted)}.empty{padding:32px;border:1px solid var(--sand);border-radius:6px;color:var(--muted);background:var(--paper)}.closing{background:var(--ink);color:var(--cream);padding:52px 0}.closing-inner{display:flex;justify-content:space-between;align-items:center;gap:24px}.closing h2{font-size:2rem;margin:0 0 10px}.closing p{margin:0;color:#d5dfe0}.closing a{display:inline-block;border:1px solid #c7d5d5;padding:12px 21px;text-decoration:none;border-radius:4px;white-space:nowrap}footer{padding:28px 0;color:var(--muted);font-size:.83rem}.footer-links{display:flex;gap:22px;flex-wrap:wrap}
+@media(max-width:720px){.nav{align-items:flex-start;flex-direction:column;padding:18px 0}.nav-links{gap:16px}.intro{padding:52px 0 40px}.feature{grid-template-columns:1fr}.feature-visual{min-height:210px}.feature-copy{padding:32px 26px}.more{padding:56px 0}.post-grid{grid-template-columns:1fr}.closing-inner{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<SiteHeader current="blog" />
+<main>
+<section class="wrap intro"><p class="eyebrow">Voyages vécus & souvenirs</p><h1>Le carnet de voyage</h1><p class="lead">Un carnet personnel pour raconter les voyages vécus, les rencontres, les découvertes, les émotions et les petits moments qui restent en mémoire.</p></section>
+{featured ? <section class="wrap" aria-label="Article à la une"><article class="feature"><div class="feature-visual" role="img" aria-label="Paysage de voyage illustratif"></div><div class="feature-copy"><p class="eyebrow">À la une</p><p class="meta">{featured.data.category || 'Carnet de voyage'} · {dateFr(featured.data.date)}</p><h2><a href={`/blog/${featured.id}/`}>{featured.data.title}</a></h2><p>{featured.data.description}</p><a class="read" href={`/blog/${featured.id}/`}>Découvrir l'article →</a></div></article></section> : <section class="wrap"><div class="empty">Les premiers récits arrivent bientôt.</div></section>}
+<section class="wrap more"><div class="section-heading"><div><p class="eyebrow">Au fil des voyages</p><h2>Mes récits de voyage</h2></div></div>{rest.length ? <div class="post-grid">{rest.map(a => <article class="post"><div class="post-visual" aria-hidden="true"></div><div class="post-body"><p class="meta">{a.data.category || 'Carnet de voyage'} · {dateFr(a.data.date)}</p><h3><a href={`/blog/${a.id}/`}>{a.data.title}</a></h3><p>{a.data.description}</p><a class="read" href={`/blog/${a.id}/`}>Lire l'article →</a></div></article>)}</div> : <p class="empty">D'autres souvenirs de voyage viendront bientôt enrichir ce carnet.</p>}</section>
+
+</main>
+<footer><div class="wrap footer-links"><a href="/">Accueil</a><a href="/a-propos/">À propos</a><a href="/contact/">Contact</a><a href="/mentions-legales/">Mentions légales</a></div></footer>
+</body></html>

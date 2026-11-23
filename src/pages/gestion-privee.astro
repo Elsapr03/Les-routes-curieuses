@@ -1,0 +1,70 @@
+---
+const statuts=['Nouvelle','En discussion','Devis envoyé','Terminée','Refusée'];
+---
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Gestion privée — Les Routes Curieuses</title>
+<style>
+:root{--cream:#faf8f2;--paper:#fffdf8;--ink:#263d52;--muted:#63727a;--terra:#b96f4d;--line:#dddcd4;--sage:#dce5d6}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:15px/1.6 'DM Sans',Arial,sans-serif}a{color:inherit}button,select{font:inherit}h1,h2{font-family:'DM Serif Display',Georgia,serif;font-weight:400}h1{font-size:clamp(2.4rem,5vw,4rem);line-height:1.1;margin:10px 0}h2{font-size:1.55rem}.wrap{width:min(1060px,calc(100% - 36px));margin:auto}.top{padding:26px 0;display:flex;justify-content:space-between;align-items:center;gap:20px}.logo{font:1.45rem 'DM Serif Display',Georgia,serif;text-decoration:none}.intro{padding:45px 0 25px}.eyebrow{color:var(--terra);text-transform:uppercase;font-size:.72rem;font-weight:700;letter-spacing:.15em}.muted{color:var(--muted)}.warning{border-left:4px solid var(--terra);padding:15px 20px;background:#f5eae3;margin:25px 0}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:28px 0}.stat{background:var(--paper);border:1px solid var(--line);padding:20px}.stat strong{font-size:2rem;display:block;font-family:'DM Serif Display',Georgia,serif;font-weight:400}.stat span{font-size:.83rem;color:var(--muted)}.panel{background:var(--paper);border:1px solid var(--line);padding:25px;margin-bottom:80px}.toolbar{display:flex;justify-content:space-between;align-items:center;gap:15px;flex-wrap:wrap;margin-bottom:18px}.toolbar h2{margin:0}.toolbar label{font-size:.85rem;font-weight:700}select{padding:9px 12px;border:1px solid #bcc7c7;background:white;color:var(--ink);border-radius:3px}.list{display:grid;gap:12px}.request{border:1px solid var(--line);padding:18px;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:15px}.request h3{margin:0 0 5px;font-size:1.07rem}.request p{margin:3px 0;font-size:.86rem;color:var(--muted)}.pill{display:inline-block;padding:5px 10px;background:var(--sage);font-size:.75rem;font-weight:700;white-space:nowrap;align-self:start}.empty{padding:30px;text-align:center;color:var(--muted)}footer{border-top:1px solid var(--line);padding:24px 0;font-size:.8rem;color:var(--muted)}@media(max-width:640px){.summary{grid-template-columns:1fr}.request{grid-template-columns:1fr}.panel{padding:16px}.top{align-items:flex-start}}
+
+.item{background:var(--paper);border:1px solid var(--line);padding:18px}.item h3{margin:0 0 5px}.item p{margin:3px 0;font-size:.86rem;color:var(--muted);overflow-wrap:anywhere}.item-bottom{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:14px}.item-bottom button{padding:9px 12px;border:1px solid var(--line);background:var(--sage);cursor:pointer}.detail{white-space:pre-wrap}#feedback{font-weight:600}.notice{border-left:4px solid var(--terra);padding:15px 20px;background:#f5eae3;margin:25px 0}button:focus-visible,select:focus-visible{outline:3px solid var(--terra);outline-offset:2px}</style>
+</head>
+<body>
+<header class="wrap top"><a class="logo" href="/">Les Routes Curieuses</a><a href="/sur-mesure/">Voir le questionnaire</a></header>
+<main class="wrap">
+<section class="intro"><p class="eyebrow">Espace de gestion · Accès privé</p><h1>Demandes de roadbooks</h1><p class="muted">Suivi des demandes de roadbooks sur mesure.</p></section>
+<p class="warning"><strong>Espace en cours de configuration.</strong> Cette page ne présente aucune information personnelle sans authentification serveur validée. Les demandes réelles restent désactivées tant que la configuration Cloudflare Access n'est pas terminée.</p>
+<section class="panel"><div class="toolbar"><h2>Liste des demandes</h2><div><label for="filtre">Statut : </label><select id="filtre"><option value="">Tous</option>{statuts.map(s=><option value={s}>{s}</option>)}</select> <button type="button" id="actualiser">Actualiser</button></div></div>
+<p id="feedback" role="status" aria-live="polite">Vérification de l'accès…</p><div id="liste" class="list"></div></section>
+</main>
+<script define:vars={{ statuts }}>
+const liste=document.getElementById('liste'),feedback=document.getElementById('feedback'),filtre=document.getElementById('filtre');
+let demandes=[];
+function element(tag,txt,cls){const n=document.createElement(tag);if(txt!==undefined)n.textContent=String(txt);if(cls)n.className=cls;return n}
+function show(){
+  liste.replaceChildren();
+  const selected=demandes.filter(d=>!filtre.value||d.statut===filtre.value);
+  if(!selected.length){liste.append(element('p','Aucune demande pour ce filtre.','muted'));return}
+  for(const d of selected){
+    const item=element('article',undefined,'item request');
+    item.append(element('h3',d.destination||'Destination à définir'));
+    item.append(element('p','Demande n°'+d.id+' · '+(d.date_creation||''),'muted'));
+    item.append(element('p','Prénom : '+(d.prenom||'')));
+    item.append(element('p','E-mail : '+(d.email||'')));
+    item.append(element('p','Départ : '+(d.date_depart||'Non précisé')+' · Durée : '+(d.duree||'Non précisée')));
+    item.append(element('p','Voyageurs : '+(d.voyageurs??'Non précisé')+' · Budget sur place / personne : '+(d.budget||'Non précisé')));
+    let transports=[];try{transports=JSON.parse(d.transports||'[]')}catch{}
+    item.append(element('p','Transports : '+(Array.isArray(transports)?transports.join(', '):'Non précisés')));
+    item.append(element('p','Inspirations : '+(d.inspirations||'Non précisées'),'detail'));
+    const bottom=element('div',undefined,'item-bottom'),label=element('label','Statut : '),select=element('select');
+    select.setAttribute('aria-label','Statut de la demande '+d.id);
+    for(const s of statuts){const option=element('option',s);option.value=s;option.selected=d.statut===s;select.append(option)}
+    const save=element('button','Enregistrer le statut'),msg=element('span','','muted');
+    save.addEventListener('click',async()=>{
+      save.disabled=true;msg.textContent='Enregistrement…';
+      try{
+        const res=await fetch('/api/admin-demandes',{method:'PATCH',headers:{'content-type':'application/json'},body:JSON.stringify({id:d.id,statut:select.value}),credentials:'same-origin'});
+        if(!res.ok)throw new Error('Modification impossible ('+res.status+').');
+        d.statut=select.value;msg.textContent='Statut enregistré.';
+      }catch(err){msg.textContent=err.message}finally{save.disabled=false}
+    });
+    label.append(select);bottom.append(label,save,msg);item.append(bottom);liste.append(item);
+  }
+}
+async function load(){
+  feedback.textContent='Vérification de l’accès…';liste.replaceChildren();
+  try{
+    const response=await fetch('/api/admin-demandes',{credentials:'same-origin',headers:{accept:'application/json'}});
+    if(response.status===403){feedback.textContent='Accès fermé : Cloudflare Access doit encore être configuré pour les deux administratrices.';return}
+    if(!response.ok)throw new Error('Service indisponible ('+response.status+').');
+    const data=await response.json();demandes=Array.isArray(data.demandes)?data.demandes:[];
+    feedback.textContent=demandes.length+' demande(s) enregistrée(s).';show();
+  }catch(e){feedback.textContent='Impossible de charger les demandes : '+e.message}
+}
+document.getElementById('actualiser').addEventListener('click',load);
+filtre.addEventListener('change',show);load();
+</script>
+</body></html>
