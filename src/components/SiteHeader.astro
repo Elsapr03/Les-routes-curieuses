@@ -1,0 +1,30 @@
+---
+const { current = '' } = Astro.props;
+---
+<header class="site-header">
+  <div class="site-nav">
+    <a href="/" class="site-logo" aria-label="Les Routes Curieuses, accueil">Les Routes Curieuses<span>Roadbooks & itinéraires</span></a>
+    <nav class="site-links" aria-label="Navigation principale">
+      <a href="/itineraires/" aria-current={current === 'itineraires' ? 'page' : undefined}>Itinéraires</a>
+      <a href="/sur-mesure/" aria-current={current === 'sur-mesure' ? 'page' : undefined}>Sur mesure</a>
+      <a href="/#bas-carbone">Bas carbone</a>
+      <a href="/blog/" aria-current={current === 'blog' ? 'page' : undefined}>Blog</a>
+      <a href="/a-propos/" aria-current={current === 'a-propos' ? 'page' : undefined}>À propos</a>
+      <a href="/contact/" aria-current={current === 'contact' ? 'page' : undefined}>Contact</a>
+    </nav>
+    <a href="/#offres" class="site-cta">Préparer mon voyage</a>
+  </div>
+</header>
+<style>
+.site-header{background:#FAF6EF;color:#082E3D;border-bottom:1px solid #E7DECF;font-family:Raleway,Arial,sans-serif}
+.site-nav{width:min(1200px,calc(100% - 48px));margin:0 auto;min-height:88px;display:flex;justify-content:space-between;align-items:center;gap:25px}
+.site-logo{font-family:'Playfair Display',Georgia,serif;font-size:1.6rem;font-weight:600;line-height:1.05;text-decoration:none;color:#082E3D;max-width:205px;flex-shrink:0}
+.site-logo span{display:block;font:600 .64rem/1.6 Raleway,Arial,sans-serif;letter-spacing:.13em;text-transform:uppercase;margin-top:6px;color:#5C6E72}
+.site-links{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.site-links a{font-size:.83rem;font-weight:600;text-decoration:none;color:#082E3D}
+.site-links a:hover,.site-links a[aria-current="page"]{color:#B9793C}
+.site-cta{background:#082E3D;color:#FAF6EF;text-decoration:none;font-size:.8rem;font-weight:700;padding:13px 16px;white-space:nowrap;border-radius:2px}
+.site-cta:hover{background:#175064}
+@media(max-width:1050px){.site-nav{flex-wrap:wrap;padding:17px 0;gap:16px}.site-links{order:3;width:100%;gap:17px}.site-cta{margin-left:auto}}
+@media(max-width:620px){.site-nav{width:calc(100% - 36px)}.site-logo{font-size:1.35rem}.site-links{gap:13px}.site-links a{font-size:.78rem}.site-cta{font-size:.74rem;padding:10px 12px}}
+</style>
